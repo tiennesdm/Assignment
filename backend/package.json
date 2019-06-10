@@ -1,0 +1,34 @@
+{
+    "name": "rentomojobackend",
+    "version": "1.0.0",
+    "description": "This is an assignment provided by the rentomojo ",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node server.js",
+        "start:server": "nodemon server.js"
+    },
+    "keywords": [
+        "backend",
+        "node",
+        "js",
+        "mongo",
+        "db"
+    ],
+    "author": "Shubham mehta",
+    "license": "ISC",
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "body-parser": "^1.19.0",
+        "debug": "^4.1.1",
+        "express": "^4.16.4",
+        "express-session": "^1.15.6",
+        "install": "^0.12.2",
+        "jsonwebtoken": "^8.5.0",
+        "mongoose": "^5.4.19",
+        "mongoose-auto-increment": "^5.0.1",
+        "mongoose-sequence": "^5.0.1",
+        "mongoose-unique-validator": "^2.0.2",
+        "nodemon": "^1.18.10"
+    }
+}
