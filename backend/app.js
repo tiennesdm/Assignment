@@ -2,6 +2,9 @@ const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
 const db = require('./util/dbconnection');
+const userRoutes = require('./routes/authRoutes');
+const commentRoutes = require('./routes/comment');
+
 
 
 const app = express();
@@ -23,6 +26,8 @@ app.use((req, res, next) => {
     );
     next();
 });
+app.use("/api/user", userRoutes);
+app.use('/api/comment', commentRoutes);
 
 
 module.exports = app;
