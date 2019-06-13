@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const db = require('./util/dbconnection');
 const userRoutes = require('./routes/authRoutes');
 const commentRoutes = require('./routes/comment');
+const voteRoutes = require('./routes/voteRoutes');
 
 
 
@@ -26,8 +27,9 @@ app.use((req, res, next) => {
     );
     next();
 });
+
 app.use("/api/user", userRoutes);
 app.use('/api/comment', commentRoutes);
-
+app.use('/api/vote', voteRoutes);
 
 module.exports = app;

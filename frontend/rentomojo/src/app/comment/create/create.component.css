@@ -1,0 +1,14 @@
+mat-form-field,
+textarea {
+    width: 100%;
+    border: 0;
+}
+
+mat-spinner {
+    margin: auto;
+}
+
+.clearfix {
+    /* margin-top:2%; */
+    padding-top: 2%;
+}

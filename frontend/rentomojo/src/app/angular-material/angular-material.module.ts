@@ -33,6 +33,7 @@ import {
     MatDividerModule,
     MatTableModule,
     MatListModule,
+    MatGridListModule
   ]
 })
 export class AngularMaterialModule { }

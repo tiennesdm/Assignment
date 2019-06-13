@@ -1,0 +1,30 @@
+<div class="row">
+    <div class="col-lg-2 col-md-2">
+
+    </div>
+    <div class="col-lg-8 col-md-8">
+        <mat-card>
+            <mat-spinner *ngIf="isLoading"></mat-spinner>
+            <form (submit)="onComment(commentForm)" #commentForm="ngForm" *ngIf="!isLoading">
+                <mat-form-field appearance="outline" color="warn">
+                    <mat-label>Type a Comment... </mat-label>
+                    <textarea matInput rows="4" ngModel placeholder="Type a Comment..." #commentInput="ngModel" name="comment"></textarea>
+                    <!----    <mat-error *ngIf="commentInput.invalid">Please enter the comment</mat-error> -->
+                </mat-form-field>
+                <div class="row">
+                    <div class="col-md-9"></div>
+                    <div class="col-md-3">
+                        <button mat-raised-button color="warn" type="submit">Post Comment</button>
+                    </div>
+                </div>
+            </form>
+            <div class="clearfix"></div>
+            <app-get></app-get>
+        </mat-card>
+
+
+    </div>
+    <div class="col-lg-2 col-md-2">
+
+    </div>
+</div>
