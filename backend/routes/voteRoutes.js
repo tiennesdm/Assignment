@@ -5,5 +5,4 @@ const router = express.Router();
 
 
 router.post('', checkAuth, voteController.postVote);
-router.get('', voteController.getComment);
 module.exports = router;
