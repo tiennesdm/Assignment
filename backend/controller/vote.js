@@ -63,7 +63,10 @@ exports.postVote = (req, res, next) => {
     }*/
 exports.getComment = (req, res, next) => {
     Vote.count({
-            voteType: 'upvotes'
+            // commentId: '$commentId'
+            // voteType: req.body.vote,
+            // commentId: req.body.commentId
+
         })
         .then(
             (comments) => {

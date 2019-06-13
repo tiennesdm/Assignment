@@ -24,7 +24,7 @@ exports.postComment = (req, res, next) => {
 
 }
 exports.getComment = (req, res, next) => {
-    Comment.find({}).populate('creator', 'password -password', )
+    Comment.find({}).populate('creator', 'fullName', )
         .then(comments => {
             if (comments) {
                 res.status(200).json(comments);
