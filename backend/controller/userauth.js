@@ -1,8 +1,8 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const User = require("../model/authModel");
-
+//const User = require("../model/authModel");
+const User = require('../model/auth');
 exports.createUser = (req, res, next) => {
     bcrypt.hash(req.body.password, 10).then(hash => {
         const user = new User({

@@ -1,0 +1,16 @@
+<div class="container" *ngFor="let item of data">
+    <div class="row">
+        <div class="col-lg-6">
+            <h6><strong>{{item.creator}}</strong></h6>
+            <p>{{item.comment}}</p>
+        </div>
+        <div class="col-lg-2"></div>
+        <div class="col-lg-4">
+            <div>
+                <span><i (click)="upvote(item.commentId);" class="fa fa-thumbs-up text-success i"></i> &nbsp; {{item.upvotesCount}}  &nbsp; upvotes </span>
+                <br>
+                <span><i (click)="downvote(item.commentId);" class="fa fa-thumbs-down text-danger i"></i> &nbsp; {{item.downvotesCount}}  &nbsp; downvotes </span>
+            </div>
+        </div>
+    </div>
+</div>

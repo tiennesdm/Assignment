@@ -8,13 +8,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BooMaterialModule } from '../app/angular-material/ngx-bootstrap.module';
 import {AngularMaterialModule} from '../app/angular-material/angular-material.module';
-import {AuthModule} from './auth/auth.module';
-import {CommentModule} from './comment/comment.module';
+import {AuthModule} from './components/auth/auth.module';
+import {CommentModule} from './components/comment/comment.module';
 import { TabsModule } from 'ngx-bootstrap';
-import { HeaderComponent } from './header/header.component';
-import { AuthInterceptor } from './auth/auth-interceptor';
+import { HeaderComponent } from './components/header/header.component';
+import { AuthInterceptor } from './components/auth/auth-interceptor';
 import { ErrorInterceptor } from './error-interceptor';
-import { ErrorComponent } from './error/error.component';
+import { ErrorComponent } from './components/error/error.component';
 @NgModule({
   declarations: [
     AppComponent,

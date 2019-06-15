@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CreateComponent } from './create/create.component';
 import { GetComponent } from './get/get.component';
-import {AngularMaterialModule} from '../angular-material/angular-material.module';
-import {CommentRoutingModule} from '../comment/comment-routing.module';
+import {AngularMaterialModule} from '../../angular-material/angular-material.module';
+import {CommentRoutingModule} from './comment-routing.module';
 
 @NgModule({
   declarations: [CreateComponent, GetComponent],

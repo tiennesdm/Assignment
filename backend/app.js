@@ -32,4 +32,10 @@ app.use("/api/user", userRoutes);
 app.use('/api/comment', commentRoutes);
 app.use('/api/vote', voteRoutes);
 
+app.use((err, req, res, next) => {
+    console.log('error:::,', err);
+
+    res.status(400).send(err.message)
+})
+
 module.exports = app;

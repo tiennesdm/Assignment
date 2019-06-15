@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
 import { environment } from '../../environments/environment';
-import { AuthData } from './auth-data.model';
+import { AuthData } from '../model/auth-data.model';
 
 const BACKEND_URL = environment.apiUrl + '/user/';
 
@@ -35,7 +35,7 @@ export class AuthService {
   }
 
   createUser(username: string, password: string, fullName: string) {
-    const authData: AuthData = { username: username, password: password, fullName:fullName };
+    const authData: AuthData = { username, password, fullName };
     this.http.post(BACKEND_URL + '/signup', authData).subscribe(
       () => {
         this.router.navigate(['/']);
@@ -47,7 +47,7 @@ export class AuthService {
   }
 
   login(username: string, password: string) {
-    const authData: AuthData = { username: username, password: password, fullName: null };
+    const authData: AuthData = { username, password, fullName: null };
     this.http
       .post<{ token: string; expiresIn: number; userId: string }>(
         BACKEND_URL + '/login',
@@ -131,9 +131,9 @@ export class AuthService {
       return;
     }
     return {
-      token: token,
+      token,
       expirationDate: new Date(expirationDate),
-      userId: userId
+      userId
     };
   }
 }
