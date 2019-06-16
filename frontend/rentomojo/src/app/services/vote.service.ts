@@ -17,7 +17,7 @@ export class VoteService {
   constructor(private http: HttpClient, private router: Router) {}
   createUpvote(commentId: string, creator: string) {
     const voteData: VoteData = { commentId, creator: null };
-    console.log('vote', voteData);
+ //   console.log('vote', voteData);
     this.http.post(BACKEND_URL + '/upvote', voteData).subscribe(
       () => {
         this.router.navigate(['/']);
@@ -29,7 +29,7 @@ export class VoteService {
   }
   createDownvote( commentId: string, creator: string) {
     const voteData: VoteData = {commentId, creator:null };
-    console.log('voteId', voteData);
+   // console.log('voteId', voteData);
     this.http.post(BACKEND_URL + '/downvote', voteData).subscribe(
       () => {
         this.router.navigate(['/']);

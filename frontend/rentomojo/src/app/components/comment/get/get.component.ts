@@ -25,16 +25,9 @@ export class GetComponent implements OnInit, DoCheck{
     this.comments.getComment().subscribe(data => {
       this.data = data;
       // this.getComment = data;
-      console.log(this.data);
+   //   console.log(this.data);
     });
   }
- /* ngOnChanges(){
-    this.comments.getComment().subscribe(data => {
-      this.data = data;
-      // this.getComment = data;
-      console.log(this.data);
-    });
-  }*/
   ngDoCheck() {
     this.comments.getComment().subscribe(data => {
       this.data = data;
@@ -44,9 +37,7 @@ export class GetComponent implements OnInit, DoCheck{
   }
   upvote(commentid: string){
     this.token = this.auth.getToken();
-    this.isAuth = this.auth.getIsAuth();
     if(this.token){
-     // console.log('commentup', commentid);
        this.vote.createUpvote(commentid, null);
 
     } else {

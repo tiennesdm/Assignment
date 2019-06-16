@@ -23,7 +23,7 @@ export class CreateComponent implements OnInit {
     console.log('comment', form.value.comment );
     this.istoken = this.auth.getToken();
     this.isAuth = this.auth.getIsAuth();
-    console.log('is Auth', this.isAuth);
+  //  console.log('is Auth', this.isAuth);
     if(this.istoken) {
       this.commentForm = form.value.comment;
 

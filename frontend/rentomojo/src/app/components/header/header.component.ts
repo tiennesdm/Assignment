@@ -1,14 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, DoCheck } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { AuthService } from '../../services/auth.service';
-
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit, OnDestroy,DoCheck {
+  isToken;
   userIsAuthenticated = false;
   private authListenerSubs: Subscription;
 
@@ -16,13 +16,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.userIsAuthenticated = this.authService.getIsAuth();
-    this.authListenerSubs = this.authService
-      .getAuthStatusListener()
-      .subscribe(isAuthenticated => {
-        this.userIsAuthenticated = isAuthenticated;
-      });
+    this.isToken = this.authService.getToken();
+   // console.log(this.isToken);
   }
-
+  ngDoCheck(){
+this.isToken = this.authService.getToken();
+  }
   onLogout() {
     this.authService.logout();
   }

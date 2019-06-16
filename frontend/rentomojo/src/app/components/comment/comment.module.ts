@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CreateComponent } from './create/create.component';
 import { GetComponent } from './get/get.component';
-import {AngularMaterialModule} from '../../angular-material/angular-material.module';
+import {AngularMaterialModule} from '../../shared/angular-material/angular-material.module';
 import {CommentRoutingModule} from './comment-routing.module';
 
 @NgModule({
