@@ -5,7 +5,6 @@ exports.postUpvote = (req, res, next) => {
     let votingUserId = req.userData.userId;
 
     postVote(commentId, votingUserId, 'UPVOTE').then(data => {
-        console.log('data:::', data)
         res.status(201).json(data);
     }).catch(ex => {
         res.status(500).json({
