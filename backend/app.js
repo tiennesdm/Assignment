@@ -27,15 +27,19 @@ app.use((req, res, next) => {
     );
     next();
 });
+app.use("/", express.static(path.join(__dirname, "rentomojo")));
 
 app.use("/api/user", userRoutes);
 app.use('/api/comment', commentRoutes);
 app.use('/api/vote', voteRoutes);
 
 app.use((err, req, res, next) => {
-    console.log('error:::,', err);
+    // console.log('error:::,', err);
 
     res.status(400).send(err.message)
-})
+});
+app.use((req, res, next) => {
+    res.sendFile(path.join(__dirname, "rentomojo", "index.html"));
+});
 
 module.exports = app;

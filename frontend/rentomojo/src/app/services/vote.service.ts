@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Subject, Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
+// import { environment } from '../../environments/environment';
+import { environment } from '../../environments/environment.prod';
 import { VoteData} from '../model/vote.model';
 
 const BACKEND_URL = environment.apiUrl + '/vote';

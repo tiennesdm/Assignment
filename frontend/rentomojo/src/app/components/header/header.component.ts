@@ -10,6 +10,7 @@ import { AuthService } from '../../services/auth.service';
 export class HeaderComponent implements OnInit, OnDestroy,DoCheck {
   isToken;
   userIsAuthenticated = false;
+  userName: string;
   private authListenerSubs: Subscription;
 
   constructor(private authService: AuthService) {}
@@ -17,10 +18,12 @@ export class HeaderComponent implements OnInit, OnDestroy,DoCheck {
   ngOnInit() {
     this.userIsAuthenticated = this.authService.getIsAuth();
     this.isToken = this.authService.getToken();
+    this.userName = this.authService.getUserName();
    // console.log(this.isToken);
   }
   ngDoCheck(){
 this.isToken = this.authService.getToken();
+this.userName = this.authService.getUserName();
   }
   onLogout() {
     this.authService.logout();
