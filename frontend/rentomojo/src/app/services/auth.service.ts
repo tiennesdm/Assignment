@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
-//import { environment } from '../../environments/environment';
-import { environment } from '../../environments/environment.prod';
+import { environment } from '../../environments/environment';
+//import { environment } from '../../environments/environment.prod';
 import { AuthData } from '../model/auth-data.model';
 
 const BACKEND_URL = environment.apiUrl + '/user';
@@ -88,6 +88,7 @@ export class AuthService {
 
   autoAuthUser() {
     const authInformation = this.getAuthData();
+    console.log('auth', authInformation);
     if (!authInformation) {
       return;
     }
@@ -97,6 +98,7 @@ export class AuthService {
       this.token = authInformation.token;
       this.isAuthenticated = true;
       this.userId = authInformation.userId;
+      this.userName = authInformation.fullName;
       this.setAuthTimer(expiresIn / 1000);
       this.authStatusListener.next(true);
     }
@@ -137,14 +139,15 @@ export class AuthService {
     const token = localStorage.getItem('token');
     const expirationDate = localStorage.getItem('expiration');
     const userId = localStorage.getItem('userId');
-    const fullName = localStorage.getItem('fullName');
+    const fullName = localStorage.getItem('userName');
     if (!token || !expirationDate || !fullName ) {
       return;
     }
     return {
       token,
       expirationDate: new Date(expirationDate),
-      userId
+      userId,
+      fullName
     };
   }
 }

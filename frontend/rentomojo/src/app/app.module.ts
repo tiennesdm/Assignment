@@ -15,6 +15,12 @@ import { HeaderComponent } from './components/header/header.component';
 import { AuthInterceptor } from './components/auth/auth-interceptor';
 import { ErrorInterceptor } from './error-interceptor';
 import { ErrorComponent } from './components/error/error.component';
+import { environment } from '../environments/environment';
+//import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+//const BACKEND_URL = environment.apiUrl;
+
+//const config: SocketIoConfig = { url: BACKEND_URL, options: {} };
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,6 +38,7 @@ import { ErrorComponent } from './components/error/error.component';
     AuthModule,
     CommentModule,
     HttpClientModule,
+  //  SocketIoModule.forRoot(config),
     TabsModule.forRoot()
 
   ],

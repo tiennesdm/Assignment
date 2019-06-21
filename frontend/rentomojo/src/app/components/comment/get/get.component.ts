@@ -10,7 +10,7 @@ import {VoteService} from '../../../services/vote.service';
   templateUrl: './get.component.html',
   styleUrls: ['./get.component.css']
 })
-export class GetComponent implements OnInit, DoCheck{
+export class GetComponent implements OnInit, OnChanges{
   isLoading;
   data;
   getComment;
@@ -18,6 +18,7 @@ export class GetComponent implements OnInit, DoCheck{
   getDownvote;
   token;
   isAuth;
+  autoauth;
   constructor(private comments: CommentService, private auth: AuthService,private router: Router, private vote: VoteService) {}
 
  ngOnInit() {
@@ -28,14 +29,23 @@ export class GetComponent implements OnInit, DoCheck{
    //   console.log(this.data);
     });
   }
-  ngDoCheck() {
+  ngOnChanges(){
     this.comments.getComment().subscribe(data => {
       this.data = data;
       // this.getComment = data;
     });
 
   }
+ /* ngDoCheck() {
+    this.comments.getComment().subscribe(data => {
+      this.data = data;
+      // this.getComment = data;
+    });
+
+  }*/
   upvote(commentid: string){
+
+    this.autoauth = this.auth.autoAuthUser();
     this.token = this.auth.getToken();
     if(this.token){
        this.vote.createUpvote(commentid, null);
@@ -45,6 +55,7 @@ export class GetComponent implements OnInit, DoCheck{
     }
   }
   downvote(commentid: string){
+    this.autoauth = this.auth.autoAuthUser();
     this.token = this.auth.getToken();
     this.isAuth = this.auth.getIsAuth();
     if (this.token) {
