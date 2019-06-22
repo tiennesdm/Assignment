@@ -1,10 +1,12 @@
 const Comment = require("../model/comment");
+const io = require('../util/socket');
 exports.postComment = (req, res, next) => {
     console.log(req.body.comment);
     const post = new Comment({
         comment: req.body.comment,
         creator: req.userData.userId
     });
+
     post
         .save()
         .then(createdPost => {
@@ -36,6 +38,10 @@ exports.getComment = async(req, res, next) => {
                 upvotesCount: v.upvotes.length,
                 downvotesCount: v.downvotes.length
             }
+        });
+        io.getIO().emit('posts', {
+            action: 'create',
+            responseData: {...responseData }
         });
 
         res.status(200).send(responseData)

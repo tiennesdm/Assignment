@@ -21,7 +21,7 @@ exports.postUpvote = (req, res, next) => {
         })).catch(err => console.log(err));
     console.log('resultId', resultlength);
     if (resultlength == 1) {
-        res.status(201).json({ message: "You are creator! We cannot process " });
+        res.status(500).json({ message: "You are creator! We cannot process " });
 
     } else {
         postVote(commentId, votingUserId, 'UPVOTE').then(data => {
@@ -49,7 +49,7 @@ exports.postDownvote = (req, res, next) => {
             console.log(result);
         })).catch(err => console.log(err));
     if (resultlength == 1) {
-        res.status(201).json({ message: "You are creator! We cannot process " });
+        res.status(500).json({ message: "You are creator! We cannot process " });
 
     } else {
         postVote(commentId, votingUserId, 'DOWNVOTE').then(data => {

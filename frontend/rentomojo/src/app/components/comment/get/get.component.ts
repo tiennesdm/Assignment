@@ -19,9 +19,13 @@ export class GetComponent implements OnInit, OnChanges{
   token;
   isAuth;
   autoauth;
+  comments2;
   constructor(private comments: CommentService, private auth: AuthService,private router: Router, private vote: VoteService) {}
 
- ngOnInit() {
+ ngOnInit()
+ {
+   this.comments2 = this.comments.getComments();
+   console.log(this.comments2);
     this.isLoading = true;
     this.comments.getComment().subscribe(data => {
       this.data = data;

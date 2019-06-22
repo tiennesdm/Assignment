@@ -24,6 +24,7 @@ export class VoteService {
         this.router.navigate(['/']);
       },
       error => {
+        console.log(error);
         this.voteStatusListener.next(false);
       }
     );
@@ -36,6 +37,7 @@ export class VoteService {
         this.router.navigate(['/']);
       },
       error => {
+        console.log(error);
         this.voteStatusListener.next(false);
       }
     )
