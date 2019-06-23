@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy,OnChanges,DoCheck ,AfterViewChecked} from '@angular/core';
+import { Component, OnInit, OnDestroy, OnChanges, DoCheck , AfterViewChecked} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { CommentService } from '../../../services/comment.service';
@@ -10,7 +10,7 @@ import {VoteService} from '../../../services/vote.service';
   templateUrl: './get.component.html',
   styleUrls: ['./get.component.css']
 })
-export class GetComponent implements OnInit, OnChanges{
+export class GetComponent implements OnInit{
   isLoading;
   data;
   getComment;
@@ -20,38 +20,44 @@ export class GetComponent implements OnInit, OnChanges{
   isAuth;
   autoauth;
   comments2;
-  constructor(private comments: CommentService, private auth: AuthService,private router: Router, private vote: VoteService) {}
+  updatedData;
+  private postsSub: Subscription;
+  constructor(private comments: CommentService, private auth: AuthService, private router: Router, private vote: VoteService) {}
 
  ngOnInit()
  {
-   this.comments2 = this.comments.getComments();
-   console.log(this.comments2);
-    this.isLoading = true;
-    this.comments.getComment().subscribe(data => {
+   console.log('this', this.comments.getComment());
+   this.data = this.comments.getArrayResponse();
+  // this.comments2 = this.comments.getComments();
+  // console.log('comment',this.comments2);
+   this.isLoading = true;
+   /* this.comments.getComment().subscribe(data => {
       this.data = data;
       // this.getComment = data;
    //   console.log(this.data);
     });
+ /*  this.postsSub = this.comments.getPostUpdateListener().subscribe((data) => {
+      console.log('updated', data);
+    }); */
+   /* this.postsSub = this.postsService
+      .getPostUpdateListener()
+      .subscribe((postData: { posts: Post[]; postCount: number }) => {
+        this.isLoading = false;
+        this.totalPosts = postData.postCount;
+        this.posts = postData.posts;
+      }); */
   }
-  ngOnChanges(){
-    this.comments.getComment().subscribe(data => {
-      this.data = data;
-      // this.getComment = data;
-    });
-
-  }
- /* ngDoCheck() {
-    this.comments.getComment().subscribe(data => {
-      this.data = data;
-      // this.getComment = data;
-    });
-
-  }*/
+ngDoCheck(){
+ // this.updatedData = this.comments.getUpdatedComment();
+//  this.data.push(this.updatedData);
+//console.log('this rray', this.comments.getArrayResponse());
+this.data = this.comments.getArrayResponse();
+}
   upvote(commentid: string){
 
     this.autoauth = this.auth.autoAuthUser();
     this.token = this.auth.getToken();
-    if(this.token){
+    if (this.token){
        this.vote.createUpvote(commentid, null);
 
     } else {
@@ -72,5 +78,8 @@ export class GetComponent implements OnInit, OnChanges{
 
 
   }
-
+/*  ngOnDestroy() {
+    this.postsSub.unsubscribe();
+  }
+*/
 }

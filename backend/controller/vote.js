@@ -1,4 +1,5 @@
 const Comments = require("../model/comment");
+const User = require("../model/auth");
 let resultlength;
 
 exports.postUpvote = (req, res, next) => {
@@ -40,6 +41,7 @@ exports.postDownvote = (req, res, next) => {
     let commentId = req.body.commentId;
 
     let votingUserId = req.userData.userId;
+
     Comments.find({ _id: req.body.commentId, creator: req.userData.userId })
         .then((result => {
             resultlength = result.length;
@@ -71,6 +73,10 @@ function postVote(commentId, votingUserId, voteType) {
     return new Promise((resolve, reject) => {
 
         let updateQuery = {}
+        let fullName;
+        User.find({ _id: votingUserId }).then((result) => {
+            fullName = result[0].fullName;
+        }).catch();
 
         if (voteType === 'UPVOTE')
             updateQuery = { $addToSet: { upvotes: votingUserId }, $pull: { downvotes: votingUserId } }
@@ -86,8 +92,14 @@ function postVote(commentId, votingUserId, voteType) {
                 resolve({
                     message: "Vote added successfully",
                     post: {
-                        ...comment,
-                        id: comment._id
+                        //   ...comment,
+                        //   id: comment._id
+                        id: comment._id,
+                        comment: comment.comment,
+                        creator: fullName,
+                        upvotesCount: comment.upvotes.length,
+                        downvotesCount: comment.downvotes.length
+
                     }
                 });
             })

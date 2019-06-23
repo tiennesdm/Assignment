@@ -20,11 +20,12 @@ export class VoteService {
     const voteData: VoteData = { commentId, creator: null };
  //   console.log('vote', voteData);
     this.http.post(BACKEND_URL + '/upvote', voteData).subscribe(
-      () => {
+      (count) => {
         this.router.navigate(['/']);
+        console.log('count', count);
       },
       error => {
-        console.log(error);
+     //   console.log(error);
         this.voteStatusListener.next(false);
       }
     );
@@ -33,11 +34,12 @@ export class VoteService {
     const voteData: VoteData = {commentId, creator:null };
    // console.log('voteId', voteData);
     this.http.post(BACKEND_URL + '/downvote', voteData).subscribe(
-      () => {
+      (count) => {
         this.router.navigate(['/']);
+        console.log('count', count);
       },
       error => {
-        console.log(error);
+     //   console.log(error);
         this.voteStatusListener.next(false);
       }
     )
