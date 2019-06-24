@@ -48,7 +48,7 @@ exports.postDownvote = (req, res, next) => {
             // res.status(201).json({ message: "We cannot process your vote " });
 
 
-            console.log(result);
+            //   console.log(result);
         })).catch(err => console.log(err));
     if (resultlength == 1) {
         res.status(500).json({ message: "You are creator! We cannot process " });
@@ -74,6 +74,7 @@ function postVote(commentId, votingUserId, voteType) {
 
         let updateQuery = {}
         let fullName;
+        let updatedresult;
         User.find({ _id: votingUserId }).then((result) => {
             fullName = result[0].fullName;
         }).catch();
@@ -88,20 +89,47 @@ function postVote(commentId, votingUserId, voteType) {
             )
             .then(comment => {
 
-                if (!comment) reject();
-                resolve({
-                    message: "Vote added successfully",
-                    post: {
-                        //   ...comment,
-                        //   id: comment._id
-                        id: comment._id,
-                        comment: comment.comment,
-                        creator: fullName,
-                        upvotesCount: comment.upvotes.length,
-                        downvotesCount: comment.downvotes.length
 
+                if (!comment) reject();
+                let commentAll = Comments.find({}).populate("creator", "fullName").then(
+                    (result) => {
+                        //  console.log(result);
+                        // updatedresult = result;
+                        updatedresult = result.map(v => {
+                            return {
+                                commentId: v._id,
+                                comment: v.comment,
+                                creator: v.creator.fullName,
+                                upvotesCount: v.upvotes.length,
+                                downvotesCount: v.downvotes.length
+                            }
+                        });
+                        resolve({
+                                message: "Vote added successfully",
+                                post: updatedresult
+                            })
+                            //            console.log('update', updatedresult);
                     }
-                });
+                ).catch();
+                console.log('updated result', updatedresult);
+                /*  resolve({
+                        message: "Vote added successfully",
+                        post: updatedresult
+                    }
+                        {
+                        message: "Vote added successfully",
+                        post: {
+                            //   ...comment,
+                            //   id: comment._id
+                            id: comment._id,
+                            comment: comment.comment,
+                            creator: fullName,
+                            upvotesCount: comment.upvotes.length,
+                            downvotesCount: comment.downvotes.length
+
+                        }
+                    }
+                );*/
             })
             .catch(ex => {
                 reject();

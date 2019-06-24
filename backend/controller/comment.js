@@ -45,7 +45,8 @@ exports.getComment = async(req, res, next) => {
                 downvotesCount: v.downvotes.length
             }
         });
-        res.status(200).send(responseData)
+        console.log('responsedata', responseData);
+        res.status(200).send(responseData);
     } catch (error) {
         res.status(500).json({
             message: "Creating a comment failed!"
