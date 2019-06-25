@@ -12,7 +12,7 @@ exports.postUpvote = (req, res, next) => {
     //   db.inventory.find( { qty: { $exists: true, $nin: [ 5, 15 ] } } )
     Comments.find({ _id: req.body.commentId, creator: req.userData.userId })
         .then((result => {
-            console.log(result.length);
+            // console.log(result.length);
             resultlength = result.length;
             //  this.resultId = result[0]._id;
             //  this.creatorId = result[0].creator;
@@ -20,7 +20,7 @@ exports.postUpvote = (req, res, next) => {
             //  console.log(result[0]._id);
             //  console.log(result[0].creator);
         })).catch(err => console.log(err));
-    console.log('resultId', resultlength);
+    //   console.log('resultId', resultlength);
     if (resultlength == 1) {
         res.status(500).json({ message: "You are creator! We cannot process " });
 
@@ -111,7 +111,7 @@ function postVote(commentId, votingUserId, voteType) {
                             //            console.log('update', updatedresult);
                     }
                 ).catch();
-                console.log('updated result', updatedresult);
+                //   console.log('updated result', updatedresult);
                 /*  resolve({
                         message: "Vote added successfully",
                         post: updatedresult

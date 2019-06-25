@@ -83,7 +83,7 @@ module.exports = "<div class=\"row\">\n    <div class=\"col-lg-2 col-md-2\"></di
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\" *ngFor=\"let item of data\">\n    <div class=\"row\">\n        <div class=\"col-lg-6 col-md-6 col-sm-6\">\n            <h6><strong>{{item.creator}}</strong></h6>\n            <p>{{item.comment}}</p>\n        </div>\n        <div class=\"col-lg-2 col-md-0 col-sm-0\"></div>\n        <div class=\"col-lg-4 col-md-4 col-sm-4\">\n            <div>\n                <span><i (click)=\"upvote(item.commentId);\" class=\"fa fa-thumbs-up text-success i\"></i> &nbsp; {{item.upvotesCount}}  &nbsp; upvotes </span>\n                <br>\n                <span><i (click)=\"downvote(item.commentId);\" class=\"fa fa-thumbs-down text-danger i\"></i> &nbsp; {{item.downvotesCount}}  &nbsp; downvotes </span>\n            </div>\n        </div>\n    </div>\n</div>\n"
+module.exports = "<div class=\"container\" *ngFor=\"let item of data\">\n    <div class=\"row\">\n        <div class=\"col-lg-6 col-md-6 col-sm-6\">\n            <h6><strong>{{item.creator}}</strong></h6>\n            <p>{{item.comment}}</p>\n        </div>\n        <div class=\"col-lg-2 col-md-0 col-sm-0\"></div>\n        <div class=\"col-lg-4 col-md-4 col-sm-4\">\n            <div>\n                <span><i (click)=\"upvote(item.commentId)\" class=\"fa fa-thumbs-up text-success i\"  ></i> &nbsp; {{item.upvotesCount}}  &nbsp; upvotes </span>\n                <br>\n                <span><i (click)=\"downvote(item.commentId);\" class=\"fa fa-thumbs-down text-danger i\"></i> &nbsp; {{item.downvotesCount}}  &nbsp; downvotes </span>\n            </div>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -94,7 +94,7 @@ module.exports = "<div class=\"container\" *ngFor=\"let item of data\">\n    <di
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h1 mat-dialog-title>An Error Occurred!</h1>\n<div mat-dialog-content>\n  <p class=\"mat-body-1\">{{ data?.message }}</p>\n</div>\n<div mat-dialog-actions>\n  <button mat-button mat-dialog-close>Okay</button>\n</div>\n"
+module.exports = "<h1 mat-dialog-title>An Error Occurred!</h1>\n<div mat-dialog-content>\n    <p class=\"mat-body-1\">{{ data?.message }}</p>\n</div>\n<div mat-dialog-actions>\n    <button mat-button mat-dialog-close>Okay</button>\n</div>"
 
 /***/ }),
 
@@ -105,7 +105,7 @@ module.exports = "<h1 mat-dialog-title>An Error Occurred!</h1>\n<div mat-dialog-
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-toolbar color=\"primary\">\n    <span>\n    <a routerLink=\"/\">RentoMojo</a>\n  </span>\n    <span class=\"spacer\"></span>\n    <ul>\n        <li *ngIf=\"!isToken\">\n            <a mat-button routerLink=\"/auth/login\" routerLinkActive=\"mat-accent\">Login</a>\n        </li>\n        <li *ngIf=\"!isToken\">\n            <a mat-button routerLink=\"/auth/signup\" routerLinkActive=\"mat-accent\">Signup</a>\n        </li>\n        <li *ngIf=\"isToken\">\n            <a mat-button>{{userName}}</a>\n        </li>\n        <li *ngIf=\"isToken\">\n            <button mat-button (click)=\"onLogout()\">Logout</button>\n        </li>\n    </ul>\n</mat-toolbar>\n"
+module.exports = "<mat-toolbar color=\"primary\">\n    <span>\n    <a routerLink=\"/\">RentoMojo</a>\n  </span>\n    <span class=\"spacer\"></span>\n    <ul>\n        <li *ngIf=\"!userIsAuthenticated\">\n            <a mat-button routerLink=\"/auth/login\" routerLinkActive=\"mat-accent\">Login</a>\n        </li>\n        <li *ngIf=\"!userIsAuthenticated\">\n            <a mat-button routerLink=\"/auth/signup\" routerLinkActive=\"mat-accent\">Signup</a>\n        </li>\n        <li *ngIf=\"userIsAuthenticated\">\n            <a mat-button>{{userName}}</a>\n        </li>\n        <li *ngIf=\"userIsAuthenticated\">\n            <button mat-button (click)=\"onLogout()\">Logout</button>\n        </li>\n    </ul>\n</mat-toolbar>"
 
 /***/ }),
 
@@ -235,6 +235,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+//import { environment } from '../environments/environment';
+//import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+//const BACKEND_URL = environment.apiUrl;
+//const config: SocketIoConfig = { url: BACKEND_URL, options: {} };
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -256,6 +260,7 @@ var AppModule = /** @class */ (function () {
                 _components_auth_auth_module__WEBPACK_IMPORTED_MODULE_11__["AuthModule"],
                 _components_comment_comment_module__WEBPACK_IMPORTED_MODULE_12__["CommentModule"],
                 _angular_common_http__WEBPACK_IMPORTED_MODULE_5__["HttpClientModule"],
+                //  SocketIoModule.forRoot(config),
                 ngx_bootstrap__WEBPACK_IMPORTED_MODULE_13__["TabsModule"].forRoot()
             ],
             providers: [
@@ -647,18 +652,24 @@ var CreateComponent = /** @class */ (function () {
         this.isLoading = false;
     }
     CreateComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.commentStatusSub = this.comment.getCommentStatusListener().subscribe(function (authStatus) {
+            _this.isLoading = false;
+        });
     };
     CreateComponent.prototype.onComment = function (form) {
         console.log('comment', form.value.comment);
+        this.autoauth = this.auth.autoAuthUser();
         this.istoken = this.auth.getToken();
         this.isAuth = this.auth.getIsAuth();
         //  console.log('is Auth', this.isAuth);
-        if (this.istoken) {
+        if (this.isAuth) {
             this.commentForm = form.value.comment;
             if (this.commentForm === '') {
                 this.message = 'Please Write the Comment';
             }
             else {
+                this.isLoading = true;
                 this.comment.createComment(this.commentForm, null);
                 form.reset();
                 this.message = '';
@@ -667,6 +678,9 @@ var CreateComponent = /** @class */ (function () {
         else {
             this.router.navigate(['/auth/login']);
         }
+    };
+    CreateComponent.prototype.ngOnDestroy = function () {
+        this.commentStatusSub.unsubscribe();
     };
     CreateComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -722,24 +736,50 @@ var GetComponent = /** @class */ (function () {
         this.auth = auth;
         this.router = router;
         this.vote = vote;
+        this.getComment = [];
+        this.valueChange = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
     }
     GetComponent.prototype.ngOnInit = function () {
-        var _this = this;
+        //  console.log('this', this.comments.getComment());
+        this.data = this.comments.getComment();
+        this.data = this.comments.getArrayResponse();
+        // this.comments2 = this.comments.getComments();
+        // console.log('comment',this.comments2);
         this.isLoading = true;
-        this.comments.getComment().subscribe(function (data) {
-            _this.data = data;
-            // this.getComment = data;
-            //   console.log(this.data);
-        });
+        /* this.comments.getComment().subscribe(data => {
+           this.data = data;
+           // this.getComment = data;
+        //   console.log(this.data);
+         });
+      /*  this.postsSub = this.comments.getPostUpdateListener().subscribe((data) => {
+           console.log('updated', data);
+         }); */
+        /* this.postsSub = this.postsService
+           .getPostUpdateListener()
+           .subscribe((postData: { posts: Post[]; postCount: number }) => {
+             this.isLoading = false;
+             this.totalPosts = postData.postCount;
+             this.posts = postData.posts;
+           }); */
     };
     GetComponent.prototype.ngDoCheck = function () {
-        var _this = this;
-        this.comments.getComment().subscribe(function (data) {
-            _this.data = data;
-            // this.getComment = data;
-        });
+        // this.updatedData = this.comments.getUpdatedComment();
+        //  this.data.push(this.updatedData);
+        //console.log('this rray', this.comments.getArrayResponse());
+        this.data = this.comments.getArrayResponse();
+        if (this.vote.getCountPost().length > 0) {
+            this.data = this.vote.getCountPost();
+        }
+        // console.log('this data', this.data);
+        // console.log('commentget', this.getComment);
+        //  this.data.splice(data2);
+        //console.log()
+        /* this.data[this.data.findIndex((el: any) =>
+            el.id === this.id2.id)] = this.data;
+         console.log('this.data', this.data); */
     };
     GetComponent.prototype.upvote = function (commentid) {
+        this.autoauth = this.auth.autoAuthUser();
         this.token = this.auth.getToken();
         if (this.token) {
             this.vote.createUpvote(commentid, null);
@@ -749,6 +789,7 @@ var GetComponent = /** @class */ (function () {
         }
     };
     GetComponent.prototype.downvote = function (commentid) {
+        this.autoauth = this.auth.autoAuthUser();
         this.token = this.auth.getToken();
         this.isAuth = this.auth.getIsAuth();
         if (this.token) {
@@ -759,6 +800,10 @@ var GetComponent = /** @class */ (function () {
             this.router.navigate(['auth/login']);
         }
     };
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])(),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Object)
+    ], GetComponent.prototype, "valueChange", void 0);
     GetComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-get',
@@ -843,17 +888,20 @@ __webpack_require__.r(__webpack_exports__);
 var HeaderComponent = /** @class */ (function () {
     function HeaderComponent(authService) {
         this.authService = authService;
-        this.userIsAuthenticated = false;
     }
     HeaderComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.autoauth = this.authService.autoAuthUser();
+        console.log(this.autoauth);
         this.userIsAuthenticated = this.authService.getIsAuth();
-        this.isToken = this.authService.getToken();
         this.userName = this.authService.getUserName();
-        // console.log(this.isToken);
-    };
-    HeaderComponent.prototype.ngDoCheck = function () {
-        this.isToken = this.authService.getToken();
-        this.userName = this.authService.getUserName();
+        this.authListenerSubs = this.authService
+            .getAuthStatusListener()
+            .subscribe(function (isAuthenticated) {
+            _this.userName = _this.authService.getUserName();
+            _this.userIsAuthenticated = isAuthenticated;
+            console.log(_this.userIsAuthenticated);
+        });
     };
     HeaderComponent.prototype.onLogout = function () {
         this.authService.logout();
@@ -949,7 +997,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-//import { environment } from '../../environments/environment';
+// import { environment } from '../../environments/environment';
 
 var BACKEND_URL = _environments_environment_prod__WEBPACK_IMPORTED_MODULE_5__["environment"].apiUrl + '/user';
 var AuthService = /** @class */ (function () {
@@ -1012,6 +1060,7 @@ var AuthService = /** @class */ (function () {
     };
     AuthService.prototype.autoAuthUser = function () {
         var authInformation = this.getAuthData();
+        console.log('auth', authInformation);
         if (!authInformation) {
             return;
         }
@@ -1021,6 +1070,7 @@ var AuthService = /** @class */ (function () {
             this.token = authInformation.token;
             this.isAuthenticated = true;
             this.userId = authInformation.userId;
+            this.userName = authInformation.fullName;
             this.setAuthTimer(expiresIn / 1000);
             this.authStatusListener.next(true);
         }
@@ -1057,14 +1107,15 @@ var AuthService = /** @class */ (function () {
         var token = localStorage.getItem('token');
         var expirationDate = localStorage.getItem('expiration');
         var userId = localStorage.getItem('userId');
-        var fullName = localStorage.getItem('fullName');
+        var fullName = localStorage.getItem('userName');
         if (!token || !expirationDate || !fullName) {
             return;
         }
         return {
             token: token,
             expirationDate: new Date(expirationDate),
-            userId: userId
+            userId: userId,
+            fullName: fullName
         };
     };
     AuthService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
@@ -1099,27 +1150,76 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-//import { environment } from '../../environments/environment';
+// import { environment } from '../../environments/environment';
 
+// import { webSocket } from 'rxjs/webSocket';
+// const subject = webSocket(environment.apiUrl);
+// import * as io from 'socket.io-client';
 var BACKEND_URL = _environments_environment_prod__WEBPACK_IMPORTED_MODULE_5__["environment"].apiUrl + '/comment';
 var CommentService = /** @class */ (function () {
     function CommentService(http, router) {
         this.http = http;
         this.router = router;
+        // private socket = io(BACKEND_URL);
         this.commentStatusListener = new rxjs__WEBPACK_IMPORTED_MODULE_4__["Subject"]();
+        this.array_object = [];
+        //  private posts: Post[] = [];
+        this.postsUpdated = new rxjs__WEBPACK_IMPORTED_MODULE_4__["Subject"]();
     }
+    //subject.subscribe((data)=>{}, (err)=>{});
     CommentService.prototype.createComment = function (comment, creator) {
         var _this = this;
         var commentData = { comment: comment, creator: null };
-        this.http.post(BACKEND_URL + '/', commentData).subscribe(function () {
+        this.http.post(BACKEND_URL + '/', commentData).subscribe(function (responseData) {
+            //console.log(this.post);
+            //  console.log(responseData.post);
+            /*  this.array_object = {
+                    comment,
+                    creator:null,
+                    upvotesCount:0,
+                    downvotsCount:0
+              } */
+            _this.commentStatusListener.next(true);
             _this.router.navigate(['/']);
+            _this.array_object.push(responseData.post);
         }, function (error) {
             _this.commentStatusListener.next(false);
         });
     };
+    /*  getComments(){
+        let url = BACKEND_URL + '/' ;
+        this.http.get<{responseData:any}>(url).pipe(map((postdata)=>{
+    
+        console.log('postdata', postdata);
+        return {
+          posts:postdata
+        };
+        })).subscribe((data)=>{
+          this.postsUpdated.next({
+            posts: data
+          });
+          console.log('data', data);
+        })
+      }*/
+    CommentService.prototype.getPostUpdateListener = function () {
+        return this.postsUpdated.asObservable();
+    };
     CommentService.prototype.getComment = function () {
+        var _this = this;
         var url = BACKEND_URL + '/';
-        return this.http.get(url);
+        this.http.get(url).subscribe(function (postdata) {
+            //  console.log('postdata', postdata);
+            _this.array_object = [];
+            for (_this.i = 0; _this.i < postdata.length; _this.i++) {
+                _this.array_object.push(postdata[_this.i]);
+            }
+        });
+    };
+    CommentService.prototype.getArrayResponse = function () {
+        return this.array_object;
+    };
+    CommentService.prototype.getCommentStatusListener = function () {
+        return this.commentStatusListener.asObservable();
     };
     CommentService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
@@ -1201,15 +1301,27 @@ var VoteService = /** @class */ (function () {
     function VoteService(http, router) {
         this.http = http;
         this.router = router;
+        this.responseCount = [];
         this.voteStatusListener = new rxjs__WEBPACK_IMPORTED_MODULE_4__["Subject"]();
+        this.array = [];
     }
     VoteService.prototype.createUpvote = function (commentId, creator) {
         var _this = this;
         var voteData = { commentId: commentId, creator: null };
         //   console.log('vote', voteData);
-        this.http.post(BACKEND_URL + '/upvote', voteData).subscribe(function () {
+        this.http.post(BACKEND_URL + '/upvote', voteData).subscribe(function (count) {
+            console.log('count', count.post);
+            // this.responseCount = [];
+            _this.array = [];
             _this.router.navigate(['/']);
+            // console.log('postdata', postdata);
+            for (_this.i = 0; _this.i < count.post.length; _this.i++) {
+                _this.array.push(count.post[_this.i]);
+            }
+            // this.responseCount.push(count.post);
+            //  console.log('count', count);
         }, function (error) {
+            //   console.log(error);
             _this.voteStatusListener.next(false);
         });
     };
@@ -1217,11 +1329,22 @@ var VoteService = /** @class */ (function () {
         var _this = this;
         var voteData = { commentId: commentId, creator: null };
         // console.log('voteId', voteData);
-        this.http.post(BACKEND_URL + '/downvote', voteData).subscribe(function () {
+        this.http.post(BACKEND_URL + '/downvote', voteData).subscribe(function (count) {
+            _this.array = [];
             _this.router.navigate(['/']);
+            for (_this.i = 0; _this.i < count.post.length; _this.i++) {
+                _this.array.push(count.post[_this.i]);
+            }
+            // console.log('count', count.post);
+            // this.responseCount = [];
+            // this.responseCount.push( count.post);
         }, function (error) {
+            //   console.log(error);
             _this.voteStatusListener.next(false);
         });
+    };
+    VoteService.prototype.getCountPost = function () {
+        return this.array;
     };
     VoteService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({

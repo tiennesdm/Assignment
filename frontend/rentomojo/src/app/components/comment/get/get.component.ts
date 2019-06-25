@@ -30,8 +30,9 @@ export class GetComponent implements OnInit, DoCheck {
 
   ngOnInit() {
   //  console.log('this', this.comments.getComment());
-    this.data = this.comments.getComment();
     this.data = this.comments.getArrayResponse();
+    this.data = this.comments.getComment();
+
 
     // this.comments2 = this.comments.getComments();
     // console.log('comment',this.comments2);
@@ -57,8 +58,12 @@ export class GetComponent implements OnInit, DoCheck {
     //  this.data.push(this.updatedData);
     //console.log('this rray', this.comments.getArrayResponse());
 
-    this.data = this.comments.getArrayResponse();
-    if(this.vote.getCountPost().length > 0){
+   // this.comments2 = this.comments.getArrayResponse();
+   // console.log('this data', this.data);
+    if(this.vote.getCountPost().length !==this.comments.getArrayResponse().length){
+   //   this.data = this.vote.getCountPost();
+      this.data = this.comments.getArrayResponse();
+    }else{
       this.data = this.vote.getCountPost();
     }
 

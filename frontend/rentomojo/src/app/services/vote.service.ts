@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Subject, Observable } from 'rxjs';
-//import { environment } from '../../environments/environment';
-import { environment } from '../../environments/environment.prod';
+import { environment } from '../../environments/environment';
+// import { environment } from '../../environments/environment.prod';
 import { VoteData} from '../model/vote.model';
 
 const BACKEND_URL = environment.apiUrl + '/vote';
@@ -24,7 +24,7 @@ export class VoteService {
  //   console.log('vote', voteData);
     this.http.post(BACKEND_URL + '/upvote', voteData).subscribe(
       (count: any) => {
-        console.log('count', count.post);
+      //  console.log('count', count.post);
        // this.responseCount = [];
         this.array = [];
         this.router.navigate(['/']);

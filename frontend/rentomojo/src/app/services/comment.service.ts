@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Subject, Observable } from 'rxjs';
-//import { environment } from '../../environments/environment';
-import { environment } from '../../environments/environment.prod';
+import { environment } from '../../environments/environment';
+// import { environment } from '../../environments/environment.prod';
 import { CommentData } from '../model/comment.model';
 import {GetcommentData} from '../model/getComment.model';
 import { map, subscribeOn } from 'rxjs/operators';
@@ -43,6 +43,7 @@ export class CommentService {
         this.commentStatusListener.next(true);
         this.router.navigate(['/']);
         this.array_object.push(responseData.post);
+        console.log('this', this.array_object);
       },
       error => {
         this.commentStatusListener.next(false);
@@ -73,6 +74,7 @@ export class CommentService {
     this.http.get(url).subscribe(
       (postdata: any) =>{
       //  console.log('postdata', postdata);
+        this.array_object = [];
         for (this.i = 0; this.i < postdata.length;this.i++){
           this.array_object.push(postdata[this.i]);
         }
